@@ -1,4 +1,4 @@
 Iamnot250
 =========
 
-this is game about math.
+this is a game about math.
