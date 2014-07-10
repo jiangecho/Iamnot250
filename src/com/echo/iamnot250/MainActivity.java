@@ -22,7 +22,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private int level;
 	
 	private static final int EXPRESSION_COUNT_PER_LEVEL = 5;
-	private static final int TIME_LEN_PER_QUESTION = 2 * 1000;
+	private static final int TIME_LEN_PER_QUESTION = 10 * 1000;
+	private static final int MAX_LEVEL = 7;
 	private int current_count;
 	
 	private MyAdapter myAdapter;
@@ -40,7 +41,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		expressions = new String[4];
 		random = new Random();
 		wrongExpressionIndex = random.nextInt(4);
-		level = 0;
+		level = 4;
 		countDownTimer = new MyCountDownTimer(TIME_LEN_PER_QUESTION, 1000);
 		resetExpressions();
 
@@ -94,9 +95,13 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private void resetExpressions(){
 		current_count ++;
 		if (current_count == EXPRESSION_COUNT_PER_LEVEL) {
+			if (level == MAX_LEVEL) {
+				Toast.makeText(this, "pass all levels", Toast.LENGTH_SHORT).show();
+				return;
+			}
 			level ++;
 			current_count = 0;
-			Toast.makeText(this, "pass one level", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "pass one level " + level , Toast.LENGTH_SHORT).show();
 		}
 
 		for (int i = 0; i < expressions.length; i++) {
