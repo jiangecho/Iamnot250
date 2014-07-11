@@ -4,7 +4,10 @@ import java.util.Random;
 
 import android.R.integer;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnItemClickListener{
@@ -22,7 +26,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private int level;
 	
 	private static final int EXPRESSION_COUNT_PER_LEVEL = 5;
-	private static final int TIME_LEN_PER_QUESTION = 10 * 1000;
+	private static final int TIME_LEN_PER_QUESTION = 50 * 1000;
 	private static final int MAX_LEVEL = 7;
 	private int current_count;
 	
@@ -30,6 +34,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	
 	private CountDownTimer countDownTimer;
 	private Context context;
+	
+	private TextView levelTV;
 	
 	
 	@Override
@@ -40,10 +46,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
 
 		expressions = new String[4];
 		random = new Random();
-		wrongExpressionIndex = random.nextInt(4);
-		level = 4;
+		level = 0;
 		countDownTimer = new MyCountDownTimer(TIME_LEN_PER_QUESTION, 1000);
-		resetExpressions();
 
 		setContentView(R.layout.fragment_main);
 
@@ -51,7 +55,10 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		myAdapter = new MyAdapter(this);
 		listView.setAdapter(myAdapter);
 		listView.setOnItemClickListener(this);
+		levelTV = (TextView) findViewById(R.id.levelTV);
+		updateLevelInfo();
 		
+		resetExpressions();
 		
 	}
 
@@ -84,15 +91,54 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (position == wrongExpressionIndex) {
-			Toast.makeText(this, "250", Toast.LENGTH_SHORT).show();
+			if (level == MAX_LEVEL) {
+				Resources resources = getResources();
+				AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+				alertDialog.setTitle(resources.getString(R.string.fail_title));
+				alertDialog.setMessage(resources.getString(R.string.level_0_fail_msg + MAX_LEVEL - 1));
+				alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, resources.getString(R.string.restart), 
+						new DialogInterface.OnClickListener() {
+				
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						level = 0;
+						updateLevelInfo();
+						current_count = 0;
+						resetExpressions();
+					
+					}
+				});
+				alertDialog.show();
+				
+			}else {
+				resetExpressions();
+				
+			}
 			
 		}else {
-			resetExpressions();
-			myAdapter.notifyDataSetChanged();
+			Toast.makeText(this, "250", Toast.LENGTH_SHORT).show();
+			Resources resources = getResources();
+			AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+			alertDialog.setTitle(resources.getString(R.string.fail_title));
+			alertDialog.setMessage(resources.getString(R.string.level_0_fail_msg + level));
+			alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, resources.getString(R.string.restart), 
+					new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					level = 0;
+					updateLevelInfo();
+					current_count = 0;
+					resetExpressions();
+					
+				}
+			});
+			alertDialog.show();
 		}
 	}
 	
 	private void resetExpressions(){
+		wrongExpressionIndex = random.nextInt(4);
 		current_count ++;
 		if (current_count == EXPRESSION_COUNT_PER_LEVEL) {
 			if (level == MAX_LEVEL) {
@@ -100,6 +146,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 				return;
 			}
 			level ++;
+			updateLevelInfo();
 			current_count = 0;
 			Toast.makeText(this, "pass one level " + level , Toast.LENGTH_SHORT).show();
 		}
@@ -112,6 +159,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			}
 			
 		}
+		myAdapter.notifyDataSetChanged();
 		
 		countDownTimer.cancel();
 		countDownTimer.start();
@@ -126,7 +174,23 @@ public class MainActivity extends Activity implements OnItemClickListener{
 
 		@Override
 		public void onFinish() {
-			Toast.makeText(context, "Game Over!", Toast.LENGTH_SHORT).show();
+			Resources resources = getResources();
+			AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+			alertDialog.setTitle(resources.getString(R.string.fail_title));
+			alertDialog.setMessage(resources.getString(R.string.time_up_msg));
+			alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, resources.getString(R.string.restart), 
+					new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					level = 0;
+					updateLevelInfo();
+					current_count = 0;
+					resetExpressions();
+					
+				}
+			});
+			alertDialog.show();
 		}
 
 		@Override
@@ -134,6 +198,10 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			
 		}
 		
+	}
+	
+	private void updateLevelInfo(){
+		levelTV.setText("ตฺ" + " " + level + " " + "นุ");
 	}
 
 }

@@ -1,8 +1,8 @@
 package com.echo.iamnot250;
 
+import java.math.BigDecimal;
 import java.util.Random;
 
-import android.R.string;
 
 public class Util {
 	private static Random random = new Random();
@@ -40,6 +40,9 @@ public class Util {
 		case 7:
 			expression = generateRightExpressionLevel7();
 			break;
+		case 8:
+			expression = generateRightExpressionLevel8();
+			break;
 			
 
 		default:
@@ -76,6 +79,9 @@ public class Util {
 			break;
 		case 7:
 			expression = generateWrongExpressionLevel7();
+			break;
+		case 8:
+			expression = generateWrongExpressionLevel8();
 			break;
 
 		default:
@@ -192,7 +198,13 @@ public class Util {
 		b = a - 250 - random.nextInt(250) + 1;
 		
 		if (random.nextBoolean()) {
-			sb.append("-").append(a).append(" - ").append(b - 2 * a);
+			int tmp = b - 2 * a;
+			if (tmp > 0) {
+				sb.append("-").append(a).append(" - ").append(b - 2 * a);
+			}else {
+				sb.append("-").append(a).append(" - (").append(b - 2 * a).append(")");
+				
+			}
 		}else {
 			sb.append(a - 2 * b).append(" - (").append("-").append(b).append(")");
 		}
@@ -207,9 +219,14 @@ public class Util {
 		
 		fa = 250 * fa;
 		fa = (float)Math.round(fa * 100) / 100;
-		fb = 250f - fa;
+		
+		BigDecimal bda = new BigDecimal(Float.toString(fa));
+		BigDecimal bd2 = new BigDecimal("250");
+		BigDecimal bdb = bd2.subtract(bda);
 
-		sb.append(fa).append(" + ").append(fb);
+		//fb = 250 - fa;
+
+		sb.append(fa).append(" + ").append(bdb.toString());
 		
 		return sb.toString();
 	}
@@ -219,11 +236,16 @@ public class Util {
 		sb.setLength(0);
 		fa = random.nextFloat();
 		
-		fa = (float)Math.round(fa * 100) / 100;
 		fa = 250 * fa;
-		fb = 250 - fa + random.nextInt(5) + 1;
+		fa = (float)Math.round(fa * 100) / 100;
 
-		sb.append(fa).append(" + ").append(fb);
+		BigDecimal bda = new BigDecimal(Float.toString(fa));
+		BigDecimal bd2 = new BigDecimal(Float.toString(250 + random.nextInt(5) + 1));
+		BigDecimal bdb = bd2.subtract(bda);
+
+		//fb = 250 - fa + random.nextInt(5) + 1;
+
+		sb.append(fa).append(" + ").append(bdb.toString());
 		
 		return sb.toString();
 	}
@@ -233,11 +255,16 @@ public class Util {
 		sb.setLength(0);
 		fa = random.nextFloat();
 		
-		fa = (float)Math.round(fa * 100) / 100;
 		fa = 250 * fa;
-		fb = 250 + fa;
+		fa = (float)Math.round(fa * 100) / 100;
+		
+		BigDecimal bda = new BigDecimal(Float.toString(fa));
+		BigDecimal bd2 = new BigDecimal("250");
+		BigDecimal bdb = bd2.add(bda);
 
-		sb.append(fb).append(" - ").append(fa);
+		//fb = 250 + fa;
+
+		sb.append(bdb.toString()).append(" - ").append(fa);
 		
 		return sb.toString();
 	}
@@ -247,11 +274,15 @@ public class Util {
 		sb.setLength(0);
 		fa = random.nextFloat();
 		
-		fa = (float)Math.round(fa * 100) / 100;
 		fa = 250 * fa;
-		fb = 250 + fa + random.nextInt(5) + 1;
+		fa = (float)Math.round(fa * 100) / 100;
+		
+		BigDecimal bda = new BigDecimal(Float.toString(fa));
+		BigDecimal bd2 = new BigDecimal(Float.toString(250 + random.nextInt(5) + 1));
+		BigDecimal bdb = bd2.add(bda);
 
-		sb.append(fb).append(" - ").append(fa);
+
+		sb.append(bdb.toString()).append(" - ").append(fa);
 		
 		return sb.toString();
 	}
@@ -261,13 +292,20 @@ public class Util {
 		sb.setLength(0);
 		fa = random.nextFloat();
 		
-		fa = (float)Math.round(fa * 250) / 100;
-		fb = 250 + fa;
+		fa = fa * 250;
+		fa = (float)Math.round(fa * 100) / 100;
+
+		BigDecimal bda = new BigDecimal(Float.toString(fa));
+		//BigDecimal bd2 = new BigDecimal(Float.toString(250 + random.nextInt(5) + 1));
+		BigDecimal bd2 = new BigDecimal("250");
+		BigDecimal bdb = bd2.add(bda);
+
+		//fb = 250 + fa;
 
 		if (random.nextBoolean()) {
-			sb.append("-").append(fa).append(" + ").append(fb);
+			sb.append("-").append(fa).append(" + ").append(bdb.toString());
 		}else {
-			sb.append(fb).append(" + (").append("-").append(fa).append(")");
+			sb.append(bdb.toString()).append(" + (").append("-").append(fa).append(")");
 		}
 		
 		return sb.toString();
@@ -277,32 +315,42 @@ public class Util {
 	private static String generateWrongExpressionLevle6(){
 		sb.setLength(0);
 		fa = random.nextFloat();
-		
-		fa = (float)Math.round(fa * 250) / 100;
-		fb = 250 + fa + random.nextInt(250) + 1;
+		fa = fa * 250;
+		fa = (float)Math.round(fa * 100) / 100;
+
+		BigDecimal bda = new BigDecimal(Float.toString(fa));
+		BigDecimal bd2 = new BigDecimal(Float.toString(250 + random.nextInt(5) + 1));
+		BigDecimal bdb = bd2.add(bda);
+
+		//fb = 250 + fa;
 
 		if (random.nextBoolean()) {
-			sb.append("-").append(fa).append(" + ").append(fb);
+			sb.append("-").append(fa).append(" + ").append(bdb.toString());
 		}else {
-			sb.append(fb).append(" + (").append("-").append(fa).append(")");
+			sb.append(bdb.toString()).append(" + (").append("-").append(fa).append(")");
 		}
 		
 		return sb.toString();
 	}
 	
+	//TODO bug
 	// fa - fb, negative
 	private static String generateRightExpressionLevel7(){
 		sb.setLength(0);
 
-		fa = random.nextFloat();
-		fa = (float)Math.round(fa * 250) / 100;
-		fa = a < 250 ? (a + 250) : a;
-		fb = fa - 250;
+		fa = random.nextFloat() * 250;
+		fa = (float)Math.round(fa * 100) / 100;
+
+		BigDecimal bda = new BigDecimal(Float.toString(-fa));
+		BigDecimal bd2 = new BigDecimal("250");
+		BigDecimal bdb = bda.subtract(bd2);
+
+		//fb = fa - 250;
 
 		if (random.nextBoolean()) {
-			sb.append("-").append(fa).append(" - ").append(fb - 2 * fa);
+			sb.append("-").append(fa).append(" - (").append(bdb.toString()).append(")");
 		}else {
-			sb.append(fa - 2 * fb).append(" - (").append("-").append(fb).append(")");
+			sb.append(bdb.add(bd2).toString()).append(" - (").append(bdb.toString()).append(")");
 		}
 		
 		return sb.toString();
@@ -312,19 +360,77 @@ public class Util {
 	private static String generateWrongExpressionLevel7(){
 		sb.setLength(0);
 
-		fa = random.nextFloat();
-		fa = (float)Math.round(fa * 250) / 100;
-		fa = a < 250 ? (a + 250) : a;
-		fb = fa - 250 + random.nextInt(250) + 1;
+		fa = random.nextFloat() * 250;
+		fa = (float)Math.round(fa * 100) / 100;
+
+		BigDecimal bda = new BigDecimal(Float.toString(-fa));
+		//BigDecimal bd2 = new BigDecimal("250");
+		BigDecimal bd2 = new BigDecimal(Float.toString(250 + random.nextInt(5) + 1));
+		BigDecimal bdb = bda.subtract(bd2);
+
+		//fb = fa - 250;
 
 		if (random.nextBoolean()) {
-			sb.append("-").append(fa).append(" - ").append(fb - 2 * fa);
+			sb.append("-").append(fa).append(" - (").append(bdb.toString()).append(")");
 		}else {
-			sb.append(fa - 2 * fb).append(" - (").append("-").append(fb).append(")");
+			sb.append(bdb.add(bd2).toString()).append(" - (").append(bdb.toString()).append(")");
+		}
+		
+		return sb.toString();
+	}
+	
+	// a + b - c
+	
+	private static String generateRightExpressionLevel8(){
+		
+		sb.setLength(0);
+		a = random.nextInt(250);
+		b = random.nextInt(250);
+		if (random.nextBoolean()) {
+			// a + b
+			c = 250 - a - b;
+			if (c > 0) {
+				sb.append(a).append(" + ").append(b).append(" + ").append(c);
+			}else {
+				sb.append(a).append(" + ").append(b).append(" + (").append(c).append(")");
+			}
+		}else {
+			// a - b
+			c = 250 - a + b;
+			if (c > 0) {
+				sb.append(a).append(" - ").append(b).append(" + ").append(c);
+			}else {
+				sb.append(a).append(" - ").append(b).append(" + (").append(c).append(")");
+			}
 		}
 		
 		return sb.toString();
 	}
 
+	private static String generateWrongExpressionLevel8(){
+		
+		sb.setLength(0);
+		a = random.nextInt(250);
+		b = random.nextInt(250);
+		if (random.nextBoolean()) {
+			// a + b
+			c = 250 - a - b + random.nextInt(5) + 1;
+			if (c > 0) {
+				sb.append(a).append(" + ").append(b).append(" + ").append(c);
+			}else {
+				sb.append(a).append(" + ").append(b).append(" + (").append(c).append(")") ;
+			}
+		}else {
+			// a - b
+			c = 250 - a + b + random.nextInt(5) + 1;
+			if (c > 0) {
+				sb.append(a).append(" - ").append(b).append(" + ").append(c);
+			}else {
+				sb.append(a).append(" - ").append(b).append(" + (").append(c).append(")");
+			}
+		}
+		
+		return sb.toString();
+	}
 	
 }
