@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private int level;
 	
 	private static final int EXPRESSION_COUNT_PER_LEVEL = 5;
-	private static final int TIME_LEN_PER_QUESTION = 50 * 1000;
+	private static final int TIME_LEN_PER_QUESTION = 20 * 1000;
 	private static final int MAX_LEVEL = 7;
 	private int current_count;
 	
@@ -46,8 +46,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 
 		expressions = new String[4];
 		random = new Random();
-		level = 0;
-		countDownTimer = new MyCountDownTimer(TIME_LEN_PER_QUESTION, 1000);
+		level = 7;
 
 		setContentView(R.layout.fragment_main);
 
@@ -62,7 +61,30 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		
 	}
 
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		countDownTimer = new MyCountDownTimer(TIME_LEN_PER_QUESTION, 1000);
+		countDownTimer.start();
+	}
 	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		countDownTimer.cancel();
+		countDownTimer = null;
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+
+
 	public class MyAdapter extends ArrayAdapter<String>{
 
 		public MyAdapter(Context context){
@@ -161,8 +183,11 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		}
 		myAdapter.notifyDataSetChanged();
 		
-		countDownTimer.cancel();
-		countDownTimer.start();
+		if (countDownTimer != null) {
+			countDownTimer.cancel();
+			countDownTimer.start();
+			
+		}
 		
 	}
 	
