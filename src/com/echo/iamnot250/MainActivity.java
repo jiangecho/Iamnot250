@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 	private Context context;
 	
 	private TextView levelTV;
+	private ProgressBar progressBar;
 	
 	private long lastPressMillis;
 	
@@ -58,6 +60,8 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 		levelTV = (TextView) findViewById(R.id.levelTV);
 		updateLevelInfo();
 		
+		progressBar = (ProgressBar) findViewById(R.id.progressBar);
+		
 		resetExpressions();
 		
 	}
@@ -67,7 +71,7 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		countDownTimer = new MyCountDownTimer(TIME_LEN_PER_QUESTION, 1000);
+		countDownTimer = new MyCountDownTimer(TIME_LEN_PER_QUESTION, 100);
 		countDownTimer.start();
 
 	}
@@ -117,6 +121,7 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 		if (countDownTimer != null) {
 			countDownTimer.cancel();
 		}
+		progressBar.setProgress(TIME_LEN_PER_QUESTION);
 
 		if (position == wrongExpressionIndex) {
 			resetExpressions();
@@ -204,6 +209,7 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 
 		@Override
 		public void onFinish() {
+			progressBar.setProgress(0);
 			Resources resources = getResources();
 			AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 			alertDialog.setTitle(resources.getString(R.string.fail_title));
@@ -226,7 +232,7 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 
 		@Override
 		public void onTick(long millisUntilFinished) {
-			
+			progressBar.setProgress((int)(millisUntilFinished / 1000));
 		}
 		
 	}

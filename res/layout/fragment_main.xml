@@ -20,6 +20,8 @@
         android:layout_marginTop="5dip"
         android:background="?android:attr/listDivider"
         />
+
+
     <TextView
         android:id="@+id/descriptionTV"
         android:layout_width="match_parent"
@@ -31,11 +33,13 @@
         android:text="@string/description_msg" 
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <View 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:layout_marginTop="5dip"
-        android:background="?android:attr/listDivider"
+        android:layout_height="wrap_content" 
+        android:progress="5"
+        android:max="10"
         />
 
 
