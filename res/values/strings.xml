@@ -19,6 +19,7 @@
     <string name="level_8_fail_msg">抱歉，你还是没法毕业。</string>
     <string name="success_msg">同学，请拿好你的小学毕业证。</string>
     <string name="time_up_msg">同学，你好慢哦，黄花菜已经凉了。</string>
+    <string name="press_twice_to_exit">再按一次退出</string>
 
 
 </resources>

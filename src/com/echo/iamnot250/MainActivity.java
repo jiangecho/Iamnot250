@@ -37,6 +37,7 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 	
 	private TextView levelTV;
 	
+	private long lastPressMillis;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -241,4 +242,22 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 		return false;
 	}
 
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			long currentMillis = System.currentTimeMillis();
+			if (currentMillis - lastPressMillis < 2000) {
+			 	finish();
+			 	return true;
+			}else {
+				lastPressMillis = currentMillis;
+				Toast toast = Toast.makeText(this, getResources().getString(R.string.press_twice_to_exit) , Toast.LENGTH_SHORT);
+				toast.show();
+				return false;
+			}
+			
+		}
+		
+		return super.onKeyUp(keyCode, event);
+	}
 }
