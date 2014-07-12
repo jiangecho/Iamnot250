@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 	private int level;
 	
 	private static final int EXPRESSION_COUNT_PER_LEVEL = 7;
-	private static final int TIME_LEN_PER_QUESTION = 5 * 1000;
+	private static final int TIME_LEN_PER_QUESTION = 10 * 1000;
 	private static final int MAX_LEVEL = 8;
 	private int current_count;
 	
@@ -114,12 +114,13 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		if (countDownTimer != null) {
+			countDownTimer.cancel();
+		}
+
 		if (position == wrongExpressionIndex) {
 			resetExpressions();
 		}else {
-			if (countDownTimer != null) {
-				countDownTimer.cancel();
-			}
 
 			Toast.makeText(this, "250", Toast.LENGTH_SHORT).show();
 			Resources resources = getResources();
@@ -168,11 +169,13 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 				alertDialog.setOnKeyListener(MainActivity.this);
 				alertDialog.show();
 				return;
+			}else {
+				level ++;
+				updateLevelInfo();
+				current_count = 0;
+				Toast.makeText(this, "pass one level " + level , Toast.LENGTH_SHORT).show();
+				
 			}
-			level ++;
-			updateLevelInfo();
-			current_count = 0;
-			Toast.makeText(this, "pass one level " + level , Toast.LENGTH_SHORT).show();
 		}
 
 		for (int i = 0; i < expressions.length; i++) {
@@ -186,7 +189,7 @@ public class MainActivity extends Activity implements OnItemClickListener, Dialo
 		myAdapter.notifyDataSetChanged();
 		
 		if (countDownTimer != null) {
-			countDownTimer.cancel();
+			//countDownTimer.cancel();
 			countDownTimer.start();
 			
 		}
