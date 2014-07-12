@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Iamnot250</string>
+    <string name="app_name">我不是250!</string>
     <string name="level_msg">小学</string>
     <string name="restart">重新开始</string>
     <string name="one_more">再玩一次</string>
