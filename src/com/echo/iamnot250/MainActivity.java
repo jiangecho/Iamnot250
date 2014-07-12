@@ -25,9 +25,9 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	private int wrongExpressionIndex;
 	private int level;
 	
-	private static final int EXPRESSION_COUNT_PER_LEVEL = 5;
-	private static final int TIME_LEN_PER_QUESTION = 20 * 1000;
-	private static final int MAX_LEVEL = 7;
+	private static final int EXPRESSION_COUNT_PER_LEVEL = 7;
+	private static final int TIME_LEN_PER_QUESTION = 5 * 1000;
+	private static final int MAX_LEVEL = 8;
 	private int current_count;
 	
 	private MyAdapter myAdapter;
@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 
 		expressions = new String[4];
 		random = new Random();
-		level = 7;
+		level = 0;
 
 		setContentView(R.layout.fragment_main);
 
@@ -113,30 +113,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (position == wrongExpressionIndex) {
-			if (level == MAX_LEVEL) {
-				Resources resources = getResources();
-				AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-				alertDialog.setTitle(resources.getString(R.string.fail_title));
-				alertDialog.setMessage(resources.getString(R.string.level_0_fail_msg + MAX_LEVEL - 1));
-				alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, resources.getString(R.string.restart), 
-						new DialogInterface.OnClickListener() {
-				
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						level = 0;
-						updateLevelInfo();
-						current_count = 0;
-						resetExpressions();
-					
-					}
-				});
-				alertDialog.show();
-				
-			}else {
-				resetExpressions();
-				
-			}
-			
+			resetExpressions();
 		}else {
 			Toast.makeText(this, "250", Toast.LENGTH_SHORT).show();
 			Resources resources = getResources();
@@ -165,6 +142,23 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		if (current_count == EXPRESSION_COUNT_PER_LEVEL) {
 			if (level == MAX_LEVEL) {
 				Toast.makeText(this, "pass all levels", Toast.LENGTH_SHORT).show();
+				Resources resources = getResources();
+				AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+				alertDialog.setTitle(resources.getString(R.string.success_title));
+				alertDialog.setMessage(resources.getString(R.string.success_msg));
+				alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, resources.getString(R.string.restart), 
+						new DialogInterface.OnClickListener() {
+				
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						level = 0;
+						updateLevelInfo();
+						current_count = 0;
+						resetExpressions();
+					
+					}
+				});
+				alertDialog.show();
 				return;
 			}
 			level ++;
