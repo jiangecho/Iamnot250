@@ -2,7 +2,6 @@ package com.echo.iamnot250;
 
 import java.util.Random;
 
-import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -18,7 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnItemClickListener{
+public class MainActivity extends Activity implements OnItemClickListener, DialogInterface.OnKeyListener{
 
 	private String[] expressions;
 	private Random random;
@@ -68,6 +68,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		super.onResume();
 		countDownTimer = new MyCountDownTimer(TIME_LEN_PER_QUESTION, 1000);
 		countDownTimer.start();
+
 	}
 	
 	@Override
@@ -115,6 +116,10 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		if (position == wrongExpressionIndex) {
 			resetExpressions();
 		}else {
+			if (countDownTimer != null) {
+				countDownTimer.cancel();
+			}
+
 			Toast.makeText(this, "250", Toast.LENGTH_SHORT).show();
 			Resources resources = getResources();
 			AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -132,6 +137,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					
 				}
 			});
+			alertDialog.setOnKeyListener(MainActivity.this);
 			alertDialog.show();
 		}
 	}
@@ -158,6 +164,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					
 					}
 				});
+				alertDialog.setOnKeyListener(MainActivity.this);
 				alertDialog.show();
 				return;
 			}
@@ -209,6 +216,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					
 				}
 			});
+			alertDialog.setOnKeyListener(MainActivity.this);
 			alertDialog.show();
 		}
 
@@ -221,6 +229,16 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	
 	private void updateLevelInfo(){
 		levelTV.setText("ตฺ" + " " + level + " " + "นุ");
+	}
+
+
+	// block the back event when the dialog is shown
+	@Override
+	public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			return true;
+		}
+		return false;
 	}
 
 }
